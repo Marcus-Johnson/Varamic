@@ -2,6 +2,23 @@ var nParticles = 100;
 var particles = [];
 var particleSize = 40; 
 
+function checkCollisions(){
+    for (var i=0; i<nParticles; i++) {
+        for(var j=0; j<nParticles; j++){
+            if(i!=j){
+                var distance = p5.Vector.dist(
+                    particles[i].position,
+                    particles[j].position
+                );
+                if(distance < particleSize){
+                    particles[i].direction.rotate(Math.random());
+                    particles[j].direction.rotate(Math.random());
+                }
+            }
+        }
+    }
+}
+
 function createParticle(){
     var particle = {};
     particle.position = createVector(
@@ -36,5 +53,14 @@ function setup(){
 }
 
 function draw(){
-
+    background(255);
+    checkCollisions();
+    for(var i=0; i<nParticles; i++){
+        particles[i].update();
+        ellipse(
+            particles[i].position.x,
+            particles[i].position.y,
+            particleSize
+        );
+    }
 }
