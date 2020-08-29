@@ -23,7 +23,10 @@ function checkCollisions(){
                         particles[j].counter = maxCounter;
                    }
                    lines.push(
-                       [particles[i].position, particles[j].position]
+                       [particles[i].position, 
+                       particles[j].position,
+                        distance
+                    ]
                    );
                 }
             }
@@ -57,28 +60,28 @@ function createParticle(){
 }
 
 function setup(){
-    createCanvas(400, 400);
+    createCanvas(1000, 1000);
     background(200);
     stroke(0, 80);
     fill(0, 90);
 
     for(var i=0; i<nParticles; i++){
         particles.push(createParticle());
+        background(0);
     }
 }
 
 function draw(){
-    background(255);
+    background(0);
     checkCollisions();
     for(var i=0; i<nParticles; i++){
         particles[i].update();
-        ellipse(
-            particles[i].position.x,
-            particles[i].position.y,
-            5
-        );
+       
     }
     for(var i=0; i<lines.length; i++){
+        var color = map(lines[i][2], 0, particleSize,
+                        0, 255);
+        stroke(color, 60);
         line(
             lines[i][0].x, lines[i][0].y,
             lines[i][1].x, lines[i][1].y
