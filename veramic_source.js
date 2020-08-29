@@ -1,6 +1,7 @@
 var nParticles = 100; 
 var particles = [];
 var particleSize = 40; 
+var maxCounter = 150;
 
 function checkCollisions(){
     for (var i=0; i<nParticles; i++) {
@@ -11,8 +12,14 @@ function checkCollisions(){
                     particles[j].position
                 );
                 if(distance < particleSize){
-                    particles[i].direction.rotate(Math.random());
-                    particles[j].direction.rotate(Math.random());
+                    if(particles[i].counter == 0){
+                        particles[i].direction.rotate(Math.random());
+                        particles[i].counter = maxCounter; 
+                    }
+                   if(particles[j].counter == 0){
+                        particles[j].direction.rotate(Math.random());
+                        particles[j].counter = maxCounter;
+                   }
                 }
             }
         }
@@ -37,7 +44,10 @@ function createParticle(){
         if(this.position.y > height || 
             this.position.y<0)
                 this.position.y = height/2; 
+        if(this.counter > 0)
+            this.counter -= 1;
         }
+        particle.counter = 0;
         return particle;
 }
 
