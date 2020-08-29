@@ -1,9 +1,11 @@
-var nParticles = 100; 
+var nParticles = 150; 
 var particles = [];
-var particleSize = 40; 
+var particleSize = 80; 
 var maxCounter = 150;
+var lines = []; 
 
 function checkCollisions(){
+    lines = [];
     for (var i=0; i<nParticles; i++) {
         for(var j=0; j<nParticles; j++){
             if(i!=j){
@@ -20,6 +22,9 @@ function checkCollisions(){
                         particles[j].direction.rotate(Math.random());
                         particles[j].counter = maxCounter;
                    }
+                   lines.push(
+                       [particles[i].position, particles[j].position]
+                   );
                 }
             }
         }
@@ -46,7 +51,7 @@ function createParticle(){
                 this.position.y = height/2; 
         if(this.counter > 0)
             this.counter -= 1;
-        }
+    }
         particle.counter = 0;
         return particle;
 }
@@ -70,7 +75,13 @@ function draw(){
         ellipse(
             particles[i].position.x,
             particles[i].position.y,
-            particleSize
+            5
+        );
+    }
+    for(var i=0; i<lines.length; i++){
+        line(
+            lines[i][0].x, lines[i][0].y,
+            lines[i][1].x, lines[i][1].y
         );
     }
 }
